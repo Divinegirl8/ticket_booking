@@ -7,6 +7,6 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class EventCreationResponse {
-    private Long id;
+public class ReserveTicketResponse {
+    private String message;
 }

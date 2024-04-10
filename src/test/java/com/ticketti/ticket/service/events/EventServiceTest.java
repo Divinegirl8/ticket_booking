@@ -1,18 +1,29 @@
 package com.ticketti.ticket.service.events;
 
 import com.ticketti.ticket.data.model.Category;
+import com.ticketti.ticket.data.model.Event;
 import com.ticketti.ticket.dtos.request.EventCreationRequest;
+import com.ticketti.ticket.dtos.request.ReserveTicketRequest;
+import com.ticketti.ticket.dtos.request.SearchEventRequest;
 import com.ticketti.ticket.dtos.response.EventCreationResponse;
+import com.ticketti.ticket.dtos.response.ReserveTicketResponse;
+import com.ticketti.ticket.dtos.response.SearchEventResponse;
+import com.ticketti.ticket.dtos.response.UserEventsResponse;
 import com.ticketti.ticket.exception.TicketException;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @SpringBootTest
+@Slf4j
 class EventServiceTest {
     @Autowired
     private EventService eventService;
@@ -23,7 +34,7 @@ class EventServiceTest {
 
 
         EventCreationRequest request = new EventCreationRequest();
-        request.setName("she code africa");
+        request.setName("she can code africa");
         request.setDescription("a talk show about technology");
         request.setAttendeesCount(100);
         LocalDateTime eventDate = LocalDateTime.of(2024, 4, 10, 15, 30, 0);
@@ -36,5 +47,77 @@ class EventServiceTest {
         assertThat(response).isNotNull();
     }
 
+    @Test
+    void test_A_Registered_User_Can_Create_Multiple_Events() throws TicketException {
+
+
+        EventCreationRequest request = new EventCreationRequest();
+        request.setName("java techie");
+        request.setDescription("a talk show about java");
+        request.setAttendeesCount(2);
+        LocalDateTime eventDate = LocalDateTime.of(2024, 12, 10, 15, 30, 0);
+        request.setDateTime(eventDate);
+        request.setCategory(Category.CONFERENCE);
+
+        EventCreationResponse response = eventService.createEvent(request, 1L);
+        assertThat(response).isNotNull();
+    }
+
+
+    @Test
+    void test_A_Registered_User_Cannot_Create_Events_With_Same_Name() throws TicketException {
+
+
+        EventCreationRequest request = new EventCreationRequest();
+        request.setName("she can code africa");
+        request.setDescription("a talk show about technology");
+        request.setAttendeesCount(100);
+        LocalDateTime eventDate = LocalDateTime.of(2024, 4, 10, 15, 30, 0);
+        request.setDateTime(eventDate);
+        request.setCategory(Category.CONFERENCE);
+
+        assertThrows(TicketException.class,()->eventService.createEvent(request, 1L));
+
+    }
+    @Test
+    void  test_A_Registered_User_Can_Get_List_Of_Events_He_Or_She_Created() throws TicketException {
+        UserEventsResponse events = eventService.findUserEvents(1L);
+        log.info("{} ->",events);
+    }
+
+    @Test
+    void test_A_User_Can_Search_For_Event() throws TicketException {
+        SearchEventRequest request = new SearchEventRequest();
+        request.setEventName("java techie");
+        SearchEventResponse response = eventService.searchEvent(request);
+        log.info("{}->",response);
+        assertThat(response).isNotNull();
+    }
+    @Test
+    void test_That_User_Cannot_Find_Event_That_Does_Not_Exist(){
+        SearchEventRequest request = new SearchEventRequest();
+        request.setEventName("java");
+        assertThrows(TicketException.class,()->eventService.searchEvent(request));
+    }
+
+    @Test
+    void test_That_User_Can_Reserve_Ticket_If_Available() throws TicketException {
+        ReserveTicketRequest request = new ReserveTicketRequest();
+        request.setName("Amanda");
+        request.setEventName(("she can code africa"));
+        request.setNumberOfTicket(100);
+        ReserveTicketResponse response = eventService.reserveTicket(request,1L);
+        assertThat(response).isNotNull();
+        log.info("{}->",response);
+    }
+
+    @Test
+    void test_That_User_Cannot_Reserve_Ticket_If_Not_Available() throws TicketException {
+        ReserveTicketRequest request = new ReserveTicketRequest();
+        request.setName("Amanda");
+        request.setEventName(("she can code africa"));
+        request.setNumberOfTicket(1);
+        assertThrows(TicketException.class,()->eventService.reserveTicket(request,1L));
+    }
 
 }

@@ -21,6 +21,7 @@ public class Event {
     @JsonIgnore
     private LocalDateTime dateTime;
     private int attendeesCount;
+    private String numberOfAttendee;
     private String description;
     @Enumerated(EnumType.STRING)
     private Category category;
@@ -30,10 +31,9 @@ public class Event {
     @Override
     public String toString() {
         return "Event{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", dateTime=" + dateTime +
-                ", attendeesCount=" + attendeesCount +
+                ", attendees=" + numberOfAttendee +
                 ", description='" + description + '\'' +
                 ", category=" + category +
                 '}';
