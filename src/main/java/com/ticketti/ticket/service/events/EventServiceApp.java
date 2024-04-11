@@ -6,7 +6,7 @@ import com.ticketti.ticket.data.model.User;
 import com.ticketti.ticket.data.repository.EventRepository;
 import com.ticketti.ticket.data.repository.UserRepository;
 import com.ticketti.ticket.dtos.request.EventCreationRequest;
-import com.ticketti.ticket.dtos.request.ReserveTicketRepository;
+import com.ticketti.ticket.data.repository.ReserveTicketRepository;
 import com.ticketti.ticket.dtos.request.ReserveTicketRequest;
 import com.ticketti.ticket.dtos.request.SearchEventRequest;
 import com.ticketti.ticket.dtos.response.EventCreationResponse;
@@ -16,9 +16,6 @@ import com.ticketti.ticket.dtos.response.UserEventsResponse;
 import com.ticketti.ticket.exception.TicketException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.ticketti.ticket.service.events.validation.Validate.*;
 
@@ -89,7 +86,7 @@ public class EventServiceApp implements EventService {
 
     private ReserveTicket getReserveTicket(ReserveTicketRequest request, User user, Event event) {
         ReserveTicket ticket = new ReserveTicket();
-        ticket.setUserId(user.getId());
+        ticket.setUser(user);
         ticket.setName(request.getName());
         ticket.setEventName(event);
         ticket.setNumberOfTicket(request.getNumberOfTicket());
@@ -102,6 +99,12 @@ public class EventServiceApp implements EventService {
         Event event = findEvent(request.getEventName());
 
         int ticketsAvailable = event.getAttendeesCount();
+
+
+        if (request.getNumberOfTicket() > ticketsAvailable){
+            throw new TicketException("Available ticket for the event is " + ticketsAvailable);
+        }
+
 
         if (ticketsAvailable == 0) {
             throw new TicketException("No more tickets available for " + event.getName());

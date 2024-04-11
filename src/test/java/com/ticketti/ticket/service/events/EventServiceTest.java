@@ -120,4 +120,43 @@ class EventServiceTest {
         assertThrows(TicketException.class,()->eventService.reserveTicket(request,1L));
     }
 
+    @Test
+    void test_A_Registered_User_Can_Create_Events_2() throws TicketException {
+
+
+        EventCreationRequest request = new EventCreationRequest();
+        request.setName("Gaming");
+        request.setDescription("learn basic ways of creating games");
+        request.setAttendeesCount(50);
+        LocalDateTime eventDate = LocalDateTime.of(2024, 4, 19, 5, 30, 0);
+        request.setDateTime(eventDate);
+        request.setCategory(Category.GAME);
+
+       EventCreationResponse response = eventService.createEvent(request,2L);
+       assertThat(response).isNotNull();
+
+    }
+
+    @Test
+    void test_That_User_Can_Reserve_Ticket_If_Available2() throws TicketException {
+        ReserveTicketRequest request = new ReserveTicketRequest();
+        request.setName("Mimi");
+        request.setEventName(("Gaming"));
+        request.setNumberOfTicket(20);
+        ReserveTicketResponse response = eventService.reserveTicket(request,1L);
+        assertThat(response).isNotNull();
+        log.info("{}->",response);
+    }
+
+    @Test
+    void test_That_User_Can_Reserve_Ticket_If_Available3() throws TicketException {
+        ReserveTicketRequest request = new ReserveTicketRequest();
+        request.setName("Vincent");
+        request.setEventName(("Gaming"));
+        request.setNumberOfTicket(1);
+        ReserveTicketResponse response = eventService.reserveTicket(request,2L);
+        assertThat(response).isNotNull();
+        log.info("{}->",response);
+    }
+
 }

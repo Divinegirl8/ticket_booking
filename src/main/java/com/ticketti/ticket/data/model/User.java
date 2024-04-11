@@ -22,6 +22,9 @@ public class User {
     private String password;
     @OneToMany(mappedBy = "user",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private List<Event> events = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    private List<ReserveTicket> reserveTicket;
+
 
     @Override
     public String toString() {
