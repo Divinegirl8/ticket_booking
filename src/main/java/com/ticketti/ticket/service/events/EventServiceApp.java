@@ -5,14 +5,12 @@ import com.ticketti.ticket.data.model.ReserveTicket;
 import com.ticketti.ticket.data.model.User;
 import com.ticketti.ticket.data.repository.EventRepository;
 import com.ticketti.ticket.data.repository.UserRepository;
+import com.ticketti.ticket.dtos.request.CancelReservationRequest;
 import com.ticketti.ticket.dtos.request.EventCreationRequest;
 import com.ticketti.ticket.data.repository.ReserveTicketRepository;
 import com.ticketti.ticket.dtos.request.ReserveTicketRequest;
 import com.ticketti.ticket.dtos.request.SearchEventRequest;
-import com.ticketti.ticket.dtos.response.EventCreationResponse;
-import com.ticketti.ticket.dtos.response.ReserveTicketResponse;
-import com.ticketti.ticket.dtos.response.SearchEventResponse;
-import com.ticketti.ticket.dtos.response.UserEventsResponse;
+import com.ticketti.ticket.dtos.response.*;
 import com.ticketti.ticket.exception.TicketException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -126,6 +124,29 @@ public class EventServiceApp implements EventService {
 
         UserEventsResponse response = new UserEventsResponse();
         response.setEvents(user.getEvents());
+        return response;
+    }
+
+    @Override
+    public CancelReservationResponse cancelReservation(CancelReservationRequest request) throws TicketException {
+        String reservationTicketId = request.getTicketId();
+        String extractNumber = reservationTicketId.replaceAll("\\D+","");
+        Long ticketId = Long.parseLong(extractNumber);
+
+        ReserveTicket ticket = ticketRepository.findById(ticketId).orElseThrow(()-> new TicketException("Ticket not found"));
+
+        Event event = ticket.getEventName();
+        int ticketAvailable = event.getAttendeesCount();
+        event.setAttendeesCount(ticketAvailable + ticket.getNumberOfTicket());
+
+        ticket.setReserved(false);
+
+        eventRepository.save(event);
+        ticketRepository.save(ticket);
+
+        CancelReservationResponse response = new CancelReservationResponse();
+        response.setMessage("Reservation has been cancelled");
+
         return response;
     }
 

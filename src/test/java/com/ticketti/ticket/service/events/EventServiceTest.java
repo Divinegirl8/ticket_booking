@@ -2,13 +2,11 @@ package com.ticketti.ticket.service.events;
 
 import com.ticketti.ticket.data.model.Category;
 import com.ticketti.ticket.data.model.Event;
+import com.ticketti.ticket.dtos.request.CancelReservationRequest;
 import com.ticketti.ticket.dtos.request.EventCreationRequest;
 import com.ticketti.ticket.dtos.request.ReserveTicketRequest;
 import com.ticketti.ticket.dtos.request.SearchEventRequest;
-import com.ticketti.ticket.dtos.response.EventCreationResponse;
-import com.ticketti.ticket.dtos.response.ReserveTicketResponse;
-import com.ticketti.ticket.dtos.response.SearchEventResponse;
-import com.ticketti.ticket.dtos.response.UserEventsResponse;
+import com.ticketti.ticket.dtos.response.*;
 import com.ticketti.ticket.exception.TicketException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -16,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
-import java.util.List;
+
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -207,6 +205,24 @@ class EventServiceTest {
         request.setEventName(("Pencil unbroken"));
         request.setNumberOfTicket(2);
         ReserveTicketResponse response = eventService.reserveTicket(request,2L);
+        assertThat(response).isNotNull();
+        log.info("{}->",response);
+    }
+
+    @Test
+    void test_That_A_User_Can_Cancel_Reserved_Ticket() throws TicketException {
+        CancelReservationRequest request = new CancelReservationRequest();
+        request.setTicketId("TID5");
+        CancelReservationResponse response = eventService.cancelReservation(request);
+        assertThat(response).isNotNull();
+        log.info("{}->",response);
+    }
+
+    @Test
+    void test_That_A_User_Can_Cancel_Reserved_Ticket2() throws TicketException {
+        CancelReservationRequest request = new CancelReservationRequest();
+        request.setTicketId("TID1");
+        CancelReservationResponse response = eventService.cancelReservation(request);
         assertThat(response).isNotNull();
         log.info("{}->",response);
     }
