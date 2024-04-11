@@ -102,11 +102,9 @@ public class EventServiceApp implements EventService {
             throw new TicketException("You cannot reserve more than 5 tickets");
         }
 
-
         if (request.getNumberOfTicket() > ticketsAvailable){
             throw new TicketException("Available ticket for the event is " + ticketsAvailable);
         }
-
 
         if (ticketsAvailable == 0) {
             throw new TicketException("No more tickets available for " + event.getName());
@@ -134,6 +132,10 @@ public class EventServiceApp implements EventService {
         Long ticketId = Long.parseLong(extractNumber);
 
         ReserveTicket ticket = ticketRepository.findById(ticketId).orElseThrow(()-> new TicketException("Ticket not found"));
+
+        if (!ticket.isReserved()){
+            throw new TicketException("Reservation with ticket " + request.getTicketId() + " has already been cancelled");
+        }
 
         Event event = ticket.getEventName();
         int ticketAvailable = event.getAttendeesCount();

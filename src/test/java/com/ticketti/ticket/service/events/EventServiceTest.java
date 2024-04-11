@@ -221,10 +221,24 @@ class EventServiceTest {
     @Test
     void test_That_A_User_Can_Cancel_Reserved_Ticket2() throws TicketException {
         CancelReservationRequest request = new CancelReservationRequest();
-        request.setTicketId("TID1");
+        request.setTicketId("TID2");
         CancelReservationResponse response = eventService.cancelReservation(request);
         assertThat(response).isNotNull();
         log.info("{}->",response);
+    }
+
+    @Test
+    void test_That_A_User_Cannot_Cancel_Reserved_Ticket_That_Does_Not_Exist1() {
+        CancelReservationRequest request = new CancelReservationRequest();
+        request.setTicketId("TID1");
+        assertThrows(TicketException.class,()->eventService.cancelReservation(request));
+    }
+
+    @Test
+    void test_That_A_User_Cannot_Cancel_Reserved_Ticket_That_Does_Not_Exist() {
+        CancelReservationRequest request = new CancelReservationRequest();
+        request.setTicketId("TID0");
+        assertThrows(TicketException.class,()->eventService.cancelReservation(request));
     }
 
 
