@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -14,9 +17,13 @@ public class Notification {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.EAGER)
-    private User user;
+    private ReserveTicket ticket;
     private String eventName;
     private String message;
+
+
+
+
 
     @Override
     public String toString() {

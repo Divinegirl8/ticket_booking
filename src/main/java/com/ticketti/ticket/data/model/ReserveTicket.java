@@ -23,4 +23,13 @@ public class ReserveTicket {
     private Event eventName;
     private boolean reserved;
     private int numberOfTicket;
+
+    @Override
+    public String toString() {
+        return "ReserveTicket{" +
+                "name='" + name + '\'' +
+                ", eventName=" + eventName +
+                ", numberOfTicket=" + numberOfTicket +
+                '}';
+    }
 }

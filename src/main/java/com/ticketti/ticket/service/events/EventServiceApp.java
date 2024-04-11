@@ -100,6 +100,10 @@ public class EventServiceApp implements EventService {
 
         int ticketsAvailable = event.getAttendeesCount();
 
+        if (request.getNumberOfTicket() > 5){
+            throw new TicketException("You cannot reserve more than 5 tickets");
+        }
+
 
         if (request.getNumberOfTicket() > ticketsAvailable){
             throw new TicketException("Available ticket for the event is " + ticketsAvailable);

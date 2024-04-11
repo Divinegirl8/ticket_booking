@@ -9,4 +9,6 @@ import java.util.List;
 public interface ReserveTicketRepository extends JpaRepository<ReserveTicket,Long> {
 
     List<ReserveTicket> findByEventName(Event event);
+    List<ReserveTicket> findByUserId(Long userId);
+
 }

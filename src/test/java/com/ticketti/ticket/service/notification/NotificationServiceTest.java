@@ -27,4 +27,22 @@ class NotificationServiceTest {
        assertThat(response).isNotNull();
     }
 
+    @Test void testNotification2() throws TicketException {
+        SendNotificationRequest request = new SendNotificationRequest();
+        request.setEventName("she can code africa");
+        request.setMessage("she can code africa conference starts tomorrow");
+        SendNotificationResponse response = notificationService.notify(request);
+        log.info("{}->",response);
+        assertThat(response).isNotNull();
+    }
+
+    @Test void testNotification3() throws TicketException {
+        SendNotificationRequest request = new SendNotificationRequest();
+        request.setEventName("pencil unbroken");
+        request.setMessage("The event starts tomorrow");
+        SendNotificationResponse response = notificationService.notify(request);
+        log.info("{}->",response);
+        assertThat(response).isNotNull();
+    }
+
 }

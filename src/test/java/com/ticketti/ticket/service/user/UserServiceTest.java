@@ -34,6 +34,16 @@ class UserServiceTest {
         UserRegistrationResponse response = userService.register(request);
         assertThat(response).isNotNull();
     }
+
+    @Test
+    void test_That_A_User_Can_Register3() throws TicketException {
+        UserRegistrationRequest request = new UserRegistrationRequest();
+        request.setName("Adel");
+        request.setEmail("Adel@gmail.com");
+        request.setPassword("password@1");
+        UserRegistrationResponse response = userService.register(request);
+        assertThat(response).isNotNull();
+    }
     @Test
     void test_That_A_UserName_Throws_Exception_If_Length_Is_Greater_Than_100(){
         UserRegistrationRequest request = new UserRegistrationRequest();
