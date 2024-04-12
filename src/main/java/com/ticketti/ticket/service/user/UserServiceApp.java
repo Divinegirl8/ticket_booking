@@ -6,10 +6,12 @@ import com.ticketti.ticket.dtos.request.UserRegistrationRequest;
 import com.ticketti.ticket.dtos.response.UserRegistrationResponse;
 import com.ticketti.ticket.exception.TicketException;
 import com.ticketti.ticket.service.user.validation.Validate;
+import com.ticketti.ticket.util.Mapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import static com.ticketti.ticket.service.user.validation.Validate.*;
+import static com.ticketti.ticket.util.Mapper.mapUser;
 
 @Service
 @AllArgsConstructor
@@ -22,21 +24,22 @@ public class UserServiceApp implements UserService{
         validateUsername(request.getName());
         validateEmail(request.getEmail());
         validatePassword(request.getPassword());
+        validateUserExist(request);
 
 
-        if (checkIfEmailExist(request.getEmail())){
-            throw new TicketException("user with that email exists, kindly provide another emil address");
-        }
-        User user = new User();
-        user.setName(request.getName());
-        user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        User user = mapUser(request.getName(),request.getEmail(),request.getPassword());
         userRepository.save(user);
 
         UserRegistrationResponse response = new UserRegistrationResponse();
         response.setId(user.getId());
 
         return response;
+    }
+
+    private void validateUserExist(UserRegistrationRequest request) throws TicketException {
+        if (checkIfEmailExist(request.getEmail())){
+            throw new TicketException("user with that email exists, kindly provide another emil address");
+        }
     }
 
     public  boolean checkIfEmailExist(String email){

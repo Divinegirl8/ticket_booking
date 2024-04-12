@@ -21,7 +21,8 @@ public class ReserveTicket {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "event_name_id")
     private Event eventName;
-    private boolean reserved;
+    @Enumerated(EnumType.STRING)
+    private ReservationStatus reserved;
     private int numberOfTicket;
 
     @Override

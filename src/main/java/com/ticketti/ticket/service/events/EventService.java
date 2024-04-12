@@ -12,11 +12,9 @@ public interface EventService {
     EventCreationResponse createEvent(EventCreationRequest request, Long userId) throws TicketException;
 
     SearchEventResponse searchEvent(SearchEventRequest request) throws TicketException;
-    ReserveTicketResponse reserveTicket(ReserveTicketRequest request,Long userId) throws TicketException;
 
     UserEventsResponse findUserEvents(Long userId) throws TicketException;
 
-    CancelReservationResponse cancelReservation(CancelReservationRequest request) throws TicketException;
 
 
 

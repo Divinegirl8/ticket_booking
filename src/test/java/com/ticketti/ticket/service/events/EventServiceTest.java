@@ -63,7 +63,7 @@ class EventServiceTest {
 
 
     @Test
-    void test_A_Registered_User_Cannot_Create_Events_With_Same_Name() throws TicketException {
+    void test_A_Registered_User_Cannot_Create_Events_With_Same_Name()  {
 
 
         EventCreationRequest request = new EventCreationRequest();
@@ -98,30 +98,9 @@ class EventServiceTest {
         assertThrows(TicketException.class,()->eventService.searchEvent(request));
     }
 
-    @Test
-    void test_That_User_Can_Reserve_Ticket_If_Available() throws TicketException {
-        ReserveTicketRequest request = new ReserveTicketRequest();
-        request.setName("Amanda");
-        request.setEventName(("she can code africa"));
-        request.setNumberOfTicket(5);
-        ReserveTicketResponse response = eventService.reserveTicket(request,1L);
-        assertThat(response).isNotNull();
-        log.info("{}->",response);
-    }
-
-    @Test
-    void test_That_User_Cannot_Reserve_Ticket_If_Not_Available() throws TicketException {
-        ReserveTicketRequest request = new ReserveTicketRequest();
-        request.setName("Anabel");
-        request.setEventName(("java techie"));
-        request.setNumberOfTicket(2);
-        eventService.reserveTicket(request,3L);
-        assertThrows(TicketException.class,()->eventService.reserveTicket(request,1L));
-    }
 
     @Test
     void test_A_Registered_User_Can_Create_Events_2() throws TicketException {
-
 
         EventCreationRequest request = new EventCreationRequest();
         request.setName("Gaming");
@@ -134,28 +113,6 @@ class EventServiceTest {
        EventCreationResponse response = eventService.createEvent(request,2L);
        assertThat(response).isNotNull();
 
-    }
-
-    @Test
-    void test_That_User_Can_Reserve_Ticket_If_Available2() throws TicketException {
-        ReserveTicketRequest request = new ReserveTicketRequest();
-        request.setName("Mimi");
-        request.setEventName(("Gaming"));
-        request.setNumberOfTicket(4);
-        ReserveTicketResponse response = eventService.reserveTicket(request,1L);
-        assertThat(response).isNotNull();
-        log.info("{}->",response);
-    }
-
-    @Test
-    void test_That_User_Can_Reserve_Ticket_If_Available3() throws TicketException {
-        ReserveTicketRequest request = new ReserveTicketRequest();
-        request.setName("Vincent");
-        request.setEventName(("Gaming"));
-        request.setNumberOfTicket(1);
-        ReserveTicketResponse response = eventService.reserveTicket(request,2L);
-        assertThat(response).isNotNull();
-        log.info("{}->",response);
     }
 
     @Test
@@ -176,70 +133,7 @@ class EventServiceTest {
         assertThat(response).isNotNull();
     }
 
-    @Test
-    void test_That_User_Can_Reserve_Ticket_If_Available4() throws TicketException {
-        ReserveTicketRequest request = new ReserveTicketRequest();
-        request.setName("Thomas");
-        request.setEventName(("Pencil unbroken"));
-        request.setNumberOfTicket(2);
-        ReserveTicketResponse response = eventService.reserveTicket(request,3L);
-        assertThat(response).isNotNull();
-        log.info("{}->",response);
-    }
 
-    @Test
-    void test_That_User_Can_Reserve_Ticket_If_Available5() throws TicketException {
-        ReserveTicketRequest request = new ReserveTicketRequest();
-        request.setName("Evans");
-        request.setEventName(("Pencil unbroken"));
-        request.setNumberOfTicket(3);
-        ReserveTicketResponse response = eventService.reserveTicket(request,1L);
-        assertThat(response).isNotNull();
-        log.info("{}->",response);
-    }
-
-    @Test
-    void test_That_User_Can_Reserve_Ticket_If_Available6() throws TicketException {
-        ReserveTicketRequest request = new ReserveTicketRequest();
-        request.setName("Lilian");
-        request.setEventName(("Pencil unbroken"));
-        request.setNumberOfTicket(2);
-        ReserveTicketResponse response = eventService.reserveTicket(request,2L);
-        assertThat(response).isNotNull();
-        log.info("{}->",response);
-    }
-
-    @Test
-    void test_That_A_User_Can_Cancel_Reserved_Ticket() throws TicketException {
-        CancelReservationRequest request = new CancelReservationRequest();
-        request.setTicketId("TID5");
-        CancelReservationResponse response = eventService.cancelReservation(request);
-        assertThat(response).isNotNull();
-        log.info("{}->",response);
-    }
-
-    @Test
-    void test_That_A_User_Can_Cancel_Reserved_Ticket2() throws TicketException {
-        CancelReservationRequest request = new CancelReservationRequest();
-        request.setTicketId("TID2");
-        CancelReservationResponse response = eventService.cancelReservation(request);
-        assertThat(response).isNotNull();
-        log.info("{}->",response);
-    }
-
-    @Test
-    void test_That_A_User_Cannot_Cancel_Reserved_Ticket_That_Does_Not_Exist1() {
-        CancelReservationRequest request = new CancelReservationRequest();
-        request.setTicketId("TID1");
-        assertThrows(TicketException.class,()->eventService.cancelReservation(request));
-    }
-
-    @Test
-    void test_That_A_User_Cannot_Cancel_Reserved_Ticket_That_Does_Not_Exist() {
-        CancelReservationRequest request = new CancelReservationRequest();
-        request.setTicketId("TID0");
-        assertThrows(TicketException.class,()->eventService.cancelReservation(request));
-    }
 
 
 }
