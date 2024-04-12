@@ -9,7 +9,7 @@ import com.ticketti.ticket.exception.TicketException;
 
 public interface ReservedTicketService {
     ReserveTicketResponse reserveTicket(ReserveTicketRequest request, Long userId) throws TicketException;
-    CancelReservationResponse cancelReservation(CancelReservationRequest request) throws TicketException;
+    CancelReservationResponse cancelReservation(CancelReservationRequest request,Long userId) throws TicketException;
 
     ReservedTicketHistoryResponse reservedTicketHistory(Long userId) throws TicketException;
 }

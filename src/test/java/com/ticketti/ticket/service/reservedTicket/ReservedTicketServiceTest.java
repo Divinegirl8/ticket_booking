@@ -101,8 +101,8 @@ class ReservedTicketServiceTest {
     @Test
     void test_That_A_User_Can_Cancel_Reserved_Ticket() throws TicketException {
         CancelReservationRequest request = new CancelReservationRequest();
-        request.setTicketId("TID5");
-        CancelReservationResponse response = reservedTicketService.cancelReservation(request);
+        request.setTicketId("TID6");
+        CancelReservationResponse response = reservedTicketService.cancelReservation(request,1L);
         assertThat(response).isNotNull();
         log.info("{}->",response);
     }
@@ -110,8 +110,8 @@ class ReservedTicketServiceTest {
     @Test
     void test_That_A_User_Can_Cancel_Reserved_Ticket2() throws TicketException {
         CancelReservationRequest request = new CancelReservationRequest();
-        request.setTicketId("TID2");
-        CancelReservationResponse response = reservedTicketService.cancelReservation(request);
+        request.setTicketId("TID7");
+        CancelReservationResponse response = reservedTicketService.cancelReservation(request,2L);
         assertThat(response).isNotNull();
         log.info("{}->",response);
     }
@@ -121,14 +121,14 @@ class ReservedTicketServiceTest {
         CancelReservationRequest request = new CancelReservationRequest();
         request.setTicketId("TID1");
 
-        assertThrows(TicketException.class,()-> reservedTicketService.cancelReservation(request));
+        assertThrows(TicketException.class,()-> reservedTicketService.cancelReservation(request,1L));
     }
 
     @Test
     void test_That_A_User_Cannot_Cancel_Reserved_Ticket_That_Does_Not_Exist() {
         CancelReservationRequest request = new CancelReservationRequest();
         request.setTicketId("TID0");
-        assertThrows(TicketException.class,()->reservedTicketService.cancelReservation(request));
+        assertThrows(TicketException.class,()->reservedTicketService.cancelReservation(request,1L));
     }
 
     @Test

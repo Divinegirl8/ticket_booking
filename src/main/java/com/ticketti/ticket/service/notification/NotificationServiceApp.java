@@ -35,6 +35,10 @@ public class NotificationServiceApp implements NotificationService{
         Event event = findEvent(request.getEventName());
         List<ReserveTicket> tickets = reserveTicketRepository.findByEventName(event);
 
+        if (tickets.isEmpty()){
+            throw new TicketException("No ticket reserved");
+        }
+
         List<Notification> notifications = new ArrayList<>();
         Notification notification = getNotification(request, tickets, notifications);
 

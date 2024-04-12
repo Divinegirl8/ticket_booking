@@ -62,6 +62,10 @@ public class EventServiceApp implements EventService {
     public UserEventsResponse findUserEvents(Long userId) throws TicketException {
         User user = findUserBy(userId);
 
+        if (user.getEvents().isEmpty()){
+            throw new TicketException("No event created");
+        }
+
         UserEventsResponse response = new UserEventsResponse();
         response.setEvents(user.getEvents());
         return response;

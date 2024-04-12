@@ -10,5 +10,7 @@ public interface ReserveTicketRepository extends JpaRepository<ReserveTicket,Lon
 
     List<ReserveTicket> findByEventName(Event event);
     List<ReserveTicket> findByUserId(Long userId);
+ReserveTicket findByIdAndUserId(Long id, Long user_id);
+
 
 }

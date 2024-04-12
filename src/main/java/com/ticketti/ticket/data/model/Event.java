@@ -18,14 +18,14 @@ public class Event {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
     private String name;
-    @JsonIgnore
+    private String numberOfAttendee;
     private LocalDateTime dateTime;
     private int attendeesCount;
-    private String numberOfAttendee;
     private String description;
     @Enumerated(EnumType.STRING)
     private Category category;
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
     private User user;
 
     @Override

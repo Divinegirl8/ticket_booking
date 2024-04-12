@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.ticketti.ticket.data.model.ReservationStatus.CANCELLED;
 import static com.ticketti.ticket.service.events.validation.Validate.validateAttendee;
@@ -41,23 +42,26 @@ public class ReservedTicketApp implements ReservedTicketService{
         ticketRepository.save(ticket);
 
         ReserveTicketResponse response = new ReserveTicketResponse();
-        response.setMessage("Ticket reserved successfully and your ticket ID is TID" + ticket.getId());
+        response.setMessage("Ticket reserved successfully and your ticket ID is " + ticket.getId());
         return response;
     }
 
     @Override
-    public CancelReservationResponse cancelReservation(CancelReservationRequest request) throws TicketException {
+    public CancelReservationResponse cancelReservation(CancelReservationRequest request,Long userId) throws TicketException {
         String reservationTicketId = request.getTicketId();
         String extractNumber = reservationTicketId.replaceAll("\\D+","");
         Long ticketId = Long.parseLong(extractNumber);
 
-        ReserveTicket ticket = ticketRepository.findById(ticketId).orElseThrow(()-> new TicketException("Ticket not found"));
+        ReserveTicket ticket = ticketRepository.findByIdAndUserId(ticketId, userId);
+               if (ticket == null){
+                throw new TicketException("Ticket not found or does not belong to the user");}
+
 
         if (ticket.getReserved().equals(CANCELLED)){
             throw new TicketException("Reservation with ticket " + request.getTicketId() + " has already been cancelled");
         }
 
-        Event event = ticket.getEventName();
+        Event event = ticket.getEvent();
         int ticketAvailable = event.getAttendeesCount();
         event.setAttendeesCount(ticketAvailable + ticket.getNumberOfTicket());
 
@@ -76,6 +80,10 @@ public class ReservedTicketApp implements ReservedTicketService{
     public ReservedTicketHistoryResponse reservedTicketHistory(Long userId) throws TicketException {
         User user = findUserBy(userId);
         List<ReserveTicket> reserveTickets = ticketRepository.findByUserId(user.getId());
+
+        if (reserveTickets.isEmpty()){
+            throw new TicketException("no reservation made");
+        }
 
         ReservedTicketHistoryResponse response = new ReservedTicketHistoryResponse();
         response.setReserveTickets(reserveTickets);

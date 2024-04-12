@@ -45,4 +45,13 @@ class NotificationServiceTest {
         assertThat(response).isNotNull();
     }
 
+    @Test void testNotification4() throws TicketException {
+        SendNotificationRequest request = new SendNotificationRequest();
+        request.setEventName("femi");
+        request.setMessage("The event starts tomorrow,getting ready");
+        SendNotificationResponse response = notificationService.notify(request);
+        log.info("{}->",response);
+        assertThat(response).isNotNull();
+    }
+
 }
