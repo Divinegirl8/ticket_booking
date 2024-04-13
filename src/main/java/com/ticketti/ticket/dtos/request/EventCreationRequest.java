@@ -16,5 +16,5 @@ public class EventCreationRequest {
     private LocalDateTime dateTime;
     private int attendeesCount;
     private String description;
-    private Category category;
+    private String category;
 }

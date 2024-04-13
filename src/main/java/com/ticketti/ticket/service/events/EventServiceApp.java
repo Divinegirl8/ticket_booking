@@ -1,5 +1,6 @@
 package com.ticketti.ticket.service.events;
 
+import com.ticketti.ticket.data.model.Category;
 import com.ticketti.ticket.data.model.Event;
 import com.ticketti.ticket.data.model.User;
 import com.ticketti.ticket.data.repository.EventRepository;
@@ -28,14 +29,24 @@ public class EventServiceApp implements EventService {
         checkIfEventNameExist(request);
 
         User user = findUserBy(userId);
+        Category category = validateCategory(request.getCategory());
 
-        Event event = mapCreateEvent(request.getName(),request.getDescription(),request.getDateTime(),request.getAttendeesCount(),request.getCategory(),user);
+        if (category == null) {throw new TicketException("Category not found");}
+
+        Event event = mapCreateEvent(request.getName(),request.getDescription(),request.getDateTime(),request.getAttendeesCount(),category,user);
         userRepository.save(user);
         eventRepository.save(event);
 
         EventCreationResponse response = new EventCreationResponse();
         response.setId(event.getId());
         return response;
+    }
+
+    private Category validateCategory(String category){
+        for (Category categories: Category.values()){
+            if (categories.name().equalsIgnoreCase(category)){return categories;}
+        }
+        return null;
     }
 
     private void checkIfEventNameExist(EventCreationRequest request) throws TicketException {

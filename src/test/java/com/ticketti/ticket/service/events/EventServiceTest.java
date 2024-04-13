@@ -37,7 +37,7 @@ class EventServiceTest {
         request.setAttendeesCount(100);
         LocalDateTime eventDate = LocalDateTime.of(2024, 4, 10, 15, 30, 0);
         request.setDateTime(eventDate);
-        request.setCategory(Category.CONFERENCE);
+        request.setCategory("CONFERENCE");
 
         EventCreationResponse response = eventService.createEvent(request, 1L);
 
@@ -55,10 +55,41 @@ class EventServiceTest {
         request.setAttendeesCount(2);
         LocalDateTime eventDate = LocalDateTime.of(2024, 12, 10, 15, 30, 0);
         request.setDateTime(eventDate);
-        request.setCategory(Category.CONFERENCE);
+        request.setCategory("CONFERENCE");
 
         EventCreationResponse response = eventService.createEvent(request, 1L);
         assertThat(response).isNotNull();
+    }
+
+    @Test
+    void test_A_Registered_User_Can_Create_Multiple_Events2() throws TicketException {
+
+
+        EventCreationRequest request = new EventCreationRequest();
+        request.setName("kitchen crib");
+        request.setDescription("a talk show about food");
+        request.setAttendeesCount(200);
+        LocalDateTime eventDate = LocalDateTime.of(2024, 1, 10, 15, 30, 0);
+        request.setDateTime(eventDate);
+        request.setCategory("Concert");
+
+        EventCreationResponse response = eventService.createEvent(request, 1L);
+        assertThat(response).isNotNull();
+    }
+    @Test
+    void test_A_Registered_User_Cannot_Create_Event_WIth_Category_That_Does_Not_Exist() throws TicketException {
+
+
+        EventCreationRequest request = new EventCreationRequest();
+        request.setName("Ay");
+        request.setDescription("a laugh out loud show");
+        request.setAttendeesCount(2000);
+        LocalDateTime eventDate = LocalDateTime.of(2024, 6, 10, 15, 30, 0);
+        request.setDateTime(eventDate);
+        request.setCategory("C");
+
+        assertThrows(TicketException.class,()->eventService.createEvent(request, 1L));
+
     }
 
 
@@ -72,7 +103,7 @@ class EventServiceTest {
         request.setAttendeesCount(100);
         LocalDateTime eventDate = LocalDateTime.of(2024, 4, 10, 15, 30, 0);
         request.setDateTime(eventDate);
-        request.setCategory(Category.CONFERENCE);
+        request.setCategory("CONFERENCE");
 
         assertThrows(TicketException.class,()->eventService.createEvent(request, 1L));
 
@@ -108,7 +139,7 @@ class EventServiceTest {
         request.setAttendeesCount(50);
         LocalDateTime eventDate = LocalDateTime.of(2024, 4, 19, 5, 30, 0);
         request.setDateTime(eventDate);
-        request.setCategory(Category.GAME);
+        request.setCategory("GAME");
 
        EventCreationResponse response = eventService.createEvent(request,2L);
        assertThat(response).isNotNull();
@@ -125,7 +156,7 @@ class EventServiceTest {
         request.setAttendeesCount(1000);
         LocalDateTime eventDate = LocalDateTime.of(2024, 8, 20, 21, 0, 0);
         request.setDateTime(eventDate);
-        request.setCategory(Category.CONCERT);
+        request.setCategory("CONCERT");
 
         EventCreationResponse response = eventService.createEvent(request, 2L);
 
